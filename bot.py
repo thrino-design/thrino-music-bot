@@ -12,6 +12,8 @@ import re
 from config import Config
 from helpers.decorators import admin_only
 from helpers.queue_manager import QueueManager
+from config import Config
+COOKIES_FILE = os.environ.get("COOKIES_FILE", "cookies.txt")
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #         🎵 THRINO MUSIC BOT — Core Engine
@@ -45,6 +47,7 @@ YDL_OPTS = {
     "quiet": True,
     "no_warnings": True,
     "default_search": "ytsearch",
+    "cookiefile": COOKIES_FILE,
     "postprocessors": [{
         "key": "FFmpegExtractAudio",
         "preferredcodec": "mp3",
@@ -53,10 +56,17 @@ YDL_OPTS = {
 }
 
 def search_youtube(query: str):
-    with YoutubeDL({"quiet": True, "default_search": "ytsearch1", "skip_download": True}) as ydl:
+    with YoutubeDL({
+        "quiet": True,
+        "default_search": "ytsearch1",
+        "skip_download": True,
+        "cookiefile": COOKIES_FILE
+    }) as ydl:
         info = ydl.extract_info(f"ytsearch1:{query}", download=False)
+
         if info and "entries" in info and info["entries"]:
             entry = info["entries"][0]
+
             return {
                 "title": entry.get("title", "Unknown"),
                 "url": entry.get("webpage_url"),
