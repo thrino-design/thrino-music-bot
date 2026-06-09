@@ -1,6 +1,6 @@
-import os
 import asyncio
 import logging
+import os
 from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pyrogram.errors import FloodWait, UserAlreadyParticipant
@@ -14,6 +14,23 @@ from helpers.decorators import admin_only
 from helpers.queue_manager import QueueManager
 from config import Config
 COOKIES_FILE = os.environ.get("COOKIES_FILE", "cookies.txt")
+from flask import Flask
+from threading import Thread
+import os
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Bot Running"
+
+def run_web():
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 10000))
+    )
+
+Thread(target=run_web).start()
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #         🎵 THRINO MUSIC BOT — Core Engine
