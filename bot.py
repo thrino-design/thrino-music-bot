@@ -51,6 +51,10 @@ app = Client(
     bot_token=Config.BOT_TOKEN
 )
 
+@app.on_message(filters.command("ping"))
+async def ping(_, message):
+    await message.reply_text("Pong!")
+
 call_py = PyTgCalls(app)
 queue = QueueManager()
 
