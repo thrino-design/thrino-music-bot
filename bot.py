@@ -54,6 +54,13 @@ app = Client(
 @app.on_message(filters.command("ping"))
 async def ping(_, message):
     await message.reply_text("Pong!")
+@app.on_message()
+async def debug_all(client, message):
+    print(
+        f"DEBUG: chat={message.chat.id} "
+        f"user={message.from_user.id if message.from_user else 'N/A'} "
+        f"text={message.text}"
+    )
 
 call_py = PyTgCalls(app)
 queue = QueueManager()
